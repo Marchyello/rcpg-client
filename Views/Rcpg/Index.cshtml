@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Mērķlapa";
+}
+
+@{ 
+    if ((bool?)TempData["actionInitiated"] == true )
+    {
+        string notificationType = ((bool?)TempData["hasErrors"] ?? false) ? "danger" : "success";
+        string notificationText = (string)TempData["notificationText"];
+        <div class="alert alert-@notificationType">
+            @notificationText
+        </div>
+    }
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<p>
+    Izmantojiet izvēlnes joslu, lai pārvietotos uz jauna maksājuma skatu, visu maksājumu skatu un asinhronās ziņojumapmaiņas patērētāja skatu.
+</p>
+
+<p>
+    Nospiediet pogu, lai slēgtu gRPC kanālu. Brīdinājums: gRPC kanālu no jauna pieslēgt varēs tikai pēc klienta restarta.
+</p>
+
+<form asp-action="ShutdownChannel" method="POST">
+    <input type="submit" value="Slēgt gRPC kanālu">
+</form>

@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package rcpg;
+
+service PaymentGatewayGrpc {
+	// Initiates either Authorize or Purchase action. Initiation can only be cardless.
+	rpc InitiateCardless (InitiateCardlessRequest) returns (InitiateCardlessResponse);
+
+	// Based on intent executes either Authorize or Purchase action for standard payment.
+	rpc PayStandard (PayStandardRequest) returns (PayResponse);
+
+	// Based on intent executes either Authorize or Purchase action for cardless payment.
+	rpc PayCardless (PayCardlessRequest) returns (PayResponse);
+
+	// Can capture both cardless and standard authorization.
+	rpc Capture (CaptureRequest) returns (PayResponse);
+
+	// Gets payment details by token or transaction. Only supported by PayPal Express Checkout.
+	rpc GetDetails (GetDetailsRequest) returns (GetDetailsResponse);
+}
+
+// Request object for initiation procedure call.
+message InitiateCardlessRequest {
+	Provider provider = 1;
+ 	int32 payment_sum = 2;
+ 	string currency = 3;
+ 	Intent intent = 4;
+ 	string return_url = 5;
+ 	string cancel_return_url = 6;
+ 	bool allow_guest_checkout = 7;
+ 	repeated Item items = 8;
+}
+
+// Request object for authorization or purchase call for standard payment.
+message PayStandardRequest {
+	Provider provider = 1;
+	int32 payment_sum = 2;
+	string currency = 3;
+	PaymentCard payment_card = 4;
+	Intent intent = 5;
+	repeated Item items = 6;
+}
+
+// Request object for authorization or purchase call for cardless payment.
+message PayCardlessRequest {
+	Provider provider = 1;
+	int32 payment_sum = 2;
+	string currency = 3;
+	string payment_id = 4;
+	string payer_id = 5;
+	Intent intent = 6;
+}
+
+// Request object for capture call for both standard and cardless payments.
+message CaptureRequest {
+	Provider provider = 1;
+	int32 payment_sum = 2;
+	string currency = 3;
+	string payment_id = 4;
+}
+
+// Request object for getting payment details.
+message GetDetailsRequest {
+	Provider provider = 1;
+	string identifier = 2;
+	PaymentIdType id_type = 3;
+}
+
+// Response object for initiation procedure call.
+message InitiateCardlessResponse {
+	repeated PaymentError payment_errors = 1;
+ 	string token = 2;
+ 	string confirm_initiation_url = 3;
+ 	string initiated_on = 4;
+}
+
+// Unified response object for authorization, purchase and capture calls
+// for both standard and cardless payments.
+message PayResponse {
+	repeated PaymentError payment_errors = 1;
+	string payment_id = 2;
+	string executed_on = 3;
+}
+
+// Response object for payment details.
+message GetDetailsResponse {
+	repeated PaymentError errors = 1;
+	string details = 2;
+}
+
+// Used for building ActiveMerchant::Billing::CreditCard instance.
+message PaymentCard {
+	string primary_number = 1;
+	string first_name = 2;
+	string last_name = 3;
+	string month = 4;
+	int32 year = 5;
+	string verification_value = 6;
+}
+
+// Represents purchased item. Not all providers support this.
+message Item {
+	string name = 1;
+	string description = 2;
+	int32 quantity = 3;
+	int32 amount = 4;
+}
+
+// Error details.
+message PaymentError {
+	string source = 1;
+	string error_code = 2;
+}
+
+// Possible service providers. Provider names must be exactly as in config.yml.
+enum Provider {
+	NO_PROVIDER = 0;
+	PaypalExpressGateway = 1;
+	AuthorizeNetGateway = 2;
+}
+
+// Possible payment intents.
+enum Intent {
+	NO_INTENT = 0;
+	PURCHASE = 1;
+	AUTHORIZATION = 2;
+}
+
+// Possible payment identifiers.
+enum PaymentIdType {
+	NO_IDENTIFIER_TYPE = 0;
+	TOKEN = 1;
+	TRANSACTION_ID = 2;
+}

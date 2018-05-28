@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Veikt maksājumu";
+}
+
+<h3 style="text-align:center;">@ViewData["Title"]</h3>
+<div style="width:100%;margin:40px 0 40px 0;">
+    <form asp-controller="Rcpg" asp-action="InitiateCardless" method="post" style="margin:auto;width:50%;">
+        <h4 style="text-align:center;">Izmantojot PayPal Express Gateway</h4>
+        <input type="text" name="paymentSum" placeholder="Summa" style="width:100%;margin:0 0 10px 0;"/>
+        <input type="hidden" name="provider" value="@Rcpg.Provider.PaypalExpressGateway" />
+
+        <button type="submit" class="like" name="intent" value="Purchase">Maksāt tagad</button>
+        <button type="submit" class="like" name="intent" value="Authorization">Maksāt, kad produkts būs pieejams</button>
+    </form>
+</div>
+
+<div style="width:100%;margin:40px 0 40px 0;">
+    <form asp-controller="Rcpg" asp-action="PayStandard" method="post" style="margin:auto;width:50%;">
+        <h4 style="text-align:center;">Izmantojot Authorize.NET</h4>
+        <input type="text" name="paymentSum" placeholder="Summa" style="width:100%;margin:0 0 10px 0;"/>
+        
+        <!-- Payment Card -->
+        <input type="text" name="PrimaryNumber" placeholder="Kartes numurs" style="width:100%;margin:0 0 10px 0;"/>
+        <input type="text" name="FirstName" placeholder="Vārds" style="width:100%;margin:0 0 10px 0;"/>
+        <input type="text" name="LastName" placeholder="Uzvārds" style="width:100%;margin:0 0 10px 0;"/>
+        <input type="text" name="Month" placeholder="Mēnesis" style="width:45%;margin:0 0 10px 0;"/>
+        <input type="text" name="Year" placeholder="Gads" style="width:45%;margin:0 0 10px 0;"/>
+        <input type="text" name="VerificationValue" placeholder="Drošības kods" style="width:100%;margin:0 0 10px 0;"/>
+        <!-- Payment Card -->
+
+        <input type="hidden" name="provider" value="@Rcpg.Provider.AuthorizeNetGateway" />
+
+        <button type="submit" class="like" name="intent" value="Purchase">Maksāt tagad</button>
+        <button type="submit" class="like" name="intent" value="Authorization">Maksāt, kad produkts būs pieejams</button>
+    </form>
+</div>

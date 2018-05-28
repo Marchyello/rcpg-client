@@ -1,0 +1,21 @@
+@model System.String
+<h3>Izvēlēties lasīt žurnalēšanas vai maksājumu rezultāta ziņojumus.</h3>
+
+<form asp-controller="Kafka" asp-action="ConsumeLogs" method="post" style="margin:20px 0 20px 0;">
+    <div>Žurnalēšanas ziņojumi</div>
+
+    <input type="hidden" name="topic" value="RCPG_log" />
+    <button type="submit">Lasīt</button>
+</form>
+
+<form asp-controller="Kafka" asp-action="ConsumeLogs" method="post" style="margin:20px 0 20px 0;">
+    <div>Maksājumu rezultātu ziņojumi</div>
+
+    <input type="hidden" name="topic" value="RCPG_capture_results" />
+    <button type="submit">Lasīt</button>
+</form>
+
+<div style="margin:20px 0 0 0;">Nolasītie ziņojumi:</div>
+<pre style="font-size:15px;">
+    @(Model ?? "Nekas netika nolasīts")
+</pre>

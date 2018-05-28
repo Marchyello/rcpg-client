@@ -1,0 +1,11 @@
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/bin/Debug/netcoreapp2.0/RcpgMicroserviceClient.deps.json
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/bin/Debug/netcoreapp2.0/RcpgMicroserviceClient.runtimeconfig.json
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/bin/Debug/netcoreapp2.0/RcpgMicroserviceClient.runtimeconfig.dev.json
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/bin/Debug/netcoreapp2.0/RcpgMicroserviceClient.dll
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/bin/Debug/netcoreapp2.0/RcpgMicroserviceClient.pdb
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.csproj.CoreCompileInputs.cache
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.AssemblyInfoInputs.cache
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.AssemblyInfo.cs
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.dll
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.pdb
+/home/mm/Documents/dotNET_projects/RcpgMicroserviceClient/obj/Debug/netcoreapp2.0/RcpgMicroserviceClient.csprojResolveAssemblyReference.cache

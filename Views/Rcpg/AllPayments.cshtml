@@ -1,0 +1,101 @@
+@model List<RcpgMicroserviceClient.Entities.Payment>
+@{
+    ViewData["Title"] = "Visi maksājumi";
+}
+
+
+@{ 
+    if ((bool?)TempData["actionInitiated"] == true )
+    {
+        string notificationType = ((bool?)TempData["hasErrors"] ?? false) ? "danger" : "success";
+        string notificationText = (string)TempData["notificationText"];
+        <div class="alert alert-@notificationType">
+            @notificationText
+        </div>
+    }
+}
+
+<h2>Visi maksājumi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    Marķieris
+                </th>
+                <th>
+                    Summa
+                </th>
+                <th>
+                    Valūta
+                </th>
+                <th>
+                    Starpnieks
+                </th>
+                <th>
+                    Nolūks
+                </th>
+                <th>
+                    Statuss
+                </th>
+                <th>
+                    TransakcijasId
+                </th>
+                <th>
+                    Iniciēts
+                </th>
+                <th>
+                    Nokārtots
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var payment in Model) {
+    bool isCapturable = 
+        Enum.Parse<Rcpg.Intent>(payment.Intent) == Rcpg.Intent.Authorization && 
+        Enum.Parse<RcpgMicroserviceClient.Models.PaymentStatus>(payment.Status) == RcpgMicroserviceClient.Models.PaymentStatus.Authorized;
+
+    // string idAndParams = (payment.TransactionId != null) ? payment.TransactionId + "?isTransaction=true" : payment.Token;
+
+        <tr>
+            <td>
+                <a href="/Rcpg/Details/@payment.Token" title="Iegūt pilnu informāciju">
+                    @Html.DisplayFor(modelItem => payment.Token)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => payment.Sum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => payment.Currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => payment.Provider)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => payment.Intent)
+            </td>
+            <td>
+                @if (isCapturable) {
+                    <form asp-controller="Rcpg" asp-action="CapturePayment" method="post">
+                        <button type="submit" class="button-as-anchor" name="transactionId" value="@payment.TransactionId" title="Nokārtot autorizētu maksājumu">@payment.Status</button>
+                    </form>
+                }
+                else {
+                    @Html.DisplayFor(modelItem => payment.Status)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => payment.TransactionId)
+            </td>
+            <td>
+                @payment.InitiatedOn.ToString("dd.MM.yyyy. HH:mm:ss")
+            </td>
+            <td>
+                @(payment.CapturedOn.HasValue ? ((DateTime)payment.CapturedOn).ToString("dd.MM.yyyy. HH:mm:ss") : "")
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
